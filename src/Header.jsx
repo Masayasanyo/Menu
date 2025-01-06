@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 function Header() {
 
-    // let location = useLocation()
+    let location = useLocation()
 
     return (
         <header>
@@ -11,7 +11,8 @@ function Header() {
                 <h1>Menu</h1>
             </div>
             <div className="link-container">
-                {/* <Link to='/' className={`link ${location.pathname === '/' ? 'active' : ''}`}><h2>Home</h2></Link> */}
+                <Link to='/' className={`link ${location.pathname === '/' ? 'active' : ''}`}><h2>Home</h2></Link>
+                <Link to='/myList' className={`link ${location.pathname === '/myList' ? 'active' : ''}`}><h2>My List</h2></Link>
             </div>
         </header>
     );

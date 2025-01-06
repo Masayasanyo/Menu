@@ -8,15 +8,76 @@ body {
   min-height: 100vh;
 }
 
+
+/* Header */
 header {
   background-color: #73BBA3;
+  display: flex;
+  justify-content: space-between;
+  color: #F6FB7A;
 }
 
+.link-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.link {
+  text-decoration:none;
+  color: gray;
+  margin-left: 40px;
+}
+
+.link:hover {
+  color: #F6FB7A; 
+}
+
+.active {
+  color: #F6FB7A; 
+}
+
+
+/* Main */
 .main {
   
 }
 
+
+/* Footer */
 footer {
   background-color: #73BBA3;
   margin-top: auto;
+}
+
+
+/* My list */
+.my-list {
+  display: flex;
+  flex-direction: column;
+}
+.my-list-header {
+  display: flex;
+  justify-content: space-around;
+  background-color: #88D66C;
+  padding: 50px 0px 50px 0px;
+}
+.my-list-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.my-recipe-container {
+  background-color: #B4E380;
+  color: black;
+  border-radius: 20px;
+  margin: 20px 20px 20px 20px;
+  padding: 10px 25px 10px 25px;
+  width: 500px;
+}
+
+.add-recipe-container {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
 }
