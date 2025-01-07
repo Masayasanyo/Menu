@@ -11,10 +11,12 @@ body {
 
 /* Header */
 header {
-  background-color: #73BBA3;
+  /* background-color: #73BBA3; */
   display: flex;
   justify-content: space-between;
-  color: #F6FB7A;
+  /* color: #F6FB7A; */
+  color: #73BBA3;
+  padding: 10px 80px 10px 80px;
 }
 
 .link-container {
@@ -29,11 +31,11 @@ header {
 }
 
 .link:hover {
-  color: #F6FB7A; 
+  color: #73BBA3; 
 }
 
 .active {
-  color: #F6FB7A; 
+  color: #73BBA3; 
 }
 
 
@@ -47,6 +49,9 @@ header {
 footer {
   background-color: #73BBA3;
   margin-top: auto;
+  text-align: center;
+  padding: 20px;
+  color: white;
 }
 
 
@@ -55,12 +60,14 @@ footer {
   display: flex;
   flex-direction: column;
 }
+
 .my-list-header {
   display: flex;
-  justify-content: space-around;
-  background-color: #88D66C;
-  padding: 50px 0px 50px 0px;
+  justify-content: center;
+  /* background-color: #88D66C; */
+  padding: 20px 0px 20px 0px;
 }
+
 .my-list-container {
   display: flex;
   justify-content: center;
@@ -68,16 +75,114 @@ footer {
 }
 
 .my-recipe-container {
-  background-color: #B4E380;
+  /* background-color: #B4E380; */
+  background-color: white;
+  border: 3px solid;
+  border-color: #73BBA3;
   color: black;
+  font-weight: bold;
   border-radius: 20px;
   margin: 20px 20px 20px 20px;
-  padding: 10px 25px 10px 25px;
-  width: 500px;
+  padding: 20px 30px 20px 30px;
+  width: 300px;
+}
+
+.my-list-add {
+  /* background-color: yellow; */
+  width: 350px;
+  height: 30px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.my-list-search {
+  /* background-color: yellow; */
+  width: 350px;
+  height: 30px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .add-recipe-container {
   display: flex;
   flex-direction: column;
-  width: 500px;
+  width: 300px;
+  background-color: #73BBA3;
+  padding: 30px 20px 30px 20px;
+  border-radius: 20px;
+}
+
+.search-recipe-container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  background-color: #73BBA3;
+  padding: 30px 20px 30px 20px;
+  border-radius: 20px;
+}
+
+form button {
+  background-color: #73BBA3;
+  border-radius: 10px;
+  padding: 5px 10px 5px 10px;
+  color: white;
+  font-weight: bold;
+  border: 2px solid;
+  border-color: white;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.my-list-header input {
+  margin-bottom: 20px;
+  border-radius: 20px;
+  height: 30px;
+  padding-left: 20px;
+}
+
+.header-button {
+  height: 30px;
+  width: 80px;
+  border-radius: 10px;
+  background-color: white;
+  padding: 5px 10px 5px 10px;
+  color: black;
+  font-weight: bold;
+  border: 2px solid;
+  border-color: black;
+}
+
+.label-container {
+  display: flex;
+  gap: 10px;
+}
+
+.label {
+  padding: 5px 10px 5px 10px;
+  border: 2px solid;
+  border-color: #73BBA3;
+  color: black;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.my-list-container h2 {
+  text-align: center;
+}
+
+.my-list-container hr {
+  border: 1px solid #73BBA3;
+}
+
+.my-list-header h3 {
+  margin: 0px 0px 10px 10px;
+  font-size: 1.3rem;
+  color: white;
 }
