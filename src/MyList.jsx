@@ -51,6 +51,15 @@ function MyList() {
         };
         if (name === "recipeMaterial") {
             value = value.split(',')
+            let list = [];
+            for (var i = 0; i < value.length; i++) {
+                const materialKey = value[i].split(":")[0];
+                const materialValue = value[i].split(":")[1];
+                let o = new Object();
+                o[materialKey] = materialValue;
+                list.push(o);
+            }
+            value = list;
         };
         if (name === "recipeRecipe") {
             value = value.split(',')
@@ -170,7 +179,7 @@ function MyList() {
                                 value={searchData.recipeLabel}
                                 onChange={handleSearchChange}
                             />
-                            <h3>Max Min</h3>
+                            <h3>Time (max)</h3>
                             <input 
                                 className='recipe-time' 
                                 placeholder="Max Min"
@@ -252,7 +261,7 @@ function MyList() {
                                 placeholder=""
                                 type="text"
                                 name="recipeMaterial"
-                                value={formData.recipeMaterial}
+                                // value={formData.recipeMaterial}
                                 onChange={handleChange}
                             />
                             <h3>Recipe</h3>
@@ -319,3 +328,189 @@ function MyList() {
 }
 
 export default MyList;
+
+
+// import React, { useState } from 'react';
+// import Single from './Single';
+// import Set from './Set';
+
+// function MyList() {
+
+//     const [myList, setMyList] = useState([
+//         {"name": "Takoyaki", "image": "https://www.otafuku.co.jp/recipe/cook/taco/assets/img/main_image01.jpg", "label": ["lunch"], "time": 30, "description": "Not bad", "material": [{"octopus": 1}, {"mayones": 0.5}], "recipe": ["Recipe1", "Recipe2"]}, 
+//         {"name": "Ramen", "image": "https://zenb.jp/cdn/shop/articles/912a_645x.jpg?v=1695687265", "label": ["lunch", "dinner"], "time": 60, "description": "Good", "material": [{"noodles": 10}, {"pork": 1}], "recipe": ["Recipe1", "Recipe2", "Recipe3"]}
+//     ]);
+
+//     const [newList, setNewList] = useState(myList);
+//     const [isAdding, setIsAdding] = useState(false);
+//     const [isSearching, setIsSearching] = useState(false);
+//     const [singleOrSet, setSingleOrSet] = useState(false);
+
+//     const [formData, setFormData] = useState({
+//         recipeName: "", 
+//         recipeImage: "", 
+//         recipeDescription: "",
+//         recipeTime: 0, 
+//         recipeMaterial: [], 
+//         recipeRecipe: [], 
+//         recipeLabel: [],
+//     });
+
+//     const [searchData, setSearchData] = useState({
+//         recipeName: "", 
+//         recipeTime: 0, 
+//         recipeMaterial: [], 
+//         recipeLabel: [],
+//     });
+
+//     const handleAddRecipe  = () => {
+//         setIsAdding(!isAdding);
+//     }
+
+//     const handleCancelRecipe  = () => {
+//         setIsAdding(false);
+//     }
+
+//     const handleOpenSearch  = () => {
+//         setIsSearching(!isSearching);
+//     }
+
+//     const handleCancelSearch  = () => {
+//         setIsSearching(false);
+//     }
+
+//     const handleChange = (event) => {
+//         let { name, value } = event.target;
+//         if (name === "recipeLabel") {
+//             value = value.split(',')
+//         };
+//         if (name === "recipeMaterial") {
+//             value = value.split(',')
+//             let list = [];
+//             for (var i = 0; i < value.length; i++) {
+//                 const materialKey = value[i].split(":")[0];
+//                 const materialValue = value[i].split(":")[1];
+//                 let o = new Object();
+//                 o[materialKey] = materialValue;
+//                 list.push(o);
+//             }
+//             value = list;
+//         };
+//         if (name === "recipeRecipe") {
+//             value = value.split(',')
+//         };
+//         setFormData({
+//             ...formData,
+//             [name]: value, 
+//         });
+//     }
+
+//     const handleSearchChange = (event) => {
+//         let { name, value } = event.target;
+//         if (name === "recipeLabel") {
+//             value = value.split(',')
+//         };
+//         if (name === "recipeMaterial") {
+//             value = value.split(',')
+//         };
+//         setSearchData({
+//             ...searchData,
+//             [name]: value, 
+//         });
+//     }
+
+//     const handleSubmit  = (event) => {
+//         event.preventDefault();
+//         const data = {"name": formData.recipeName, "image": formData.recipeImage, "time": formData.recipeTime, "description": formData.recipeDescription, "material": formData.recipeMaterial, "recipe": formData.recipeRecipe, "label": formData.recipeLabel}
+//         const updatedList = [...myList, data];
+//         setMyList(updatedList);
+//         setNewList(updatedList);
+//         setFormData({
+//             recipeName: "",
+//             recipeImage: "",
+//             recipeDescription: "",
+//             recipeTime: 0,
+//             recipeMaterial: [],
+//             recipeRecipe: [],
+//             recipeLabel: [],
+//         });
+//         setIsAdding(false);
+//     }
+
+//     const handleSearchSubmit  = (event) => {
+//         event.preventDefault();
+//         const name = searchData.recipeName;
+//         const label = searchData.recipeLabel;
+//         const time = searchData.recipeTime;
+//         const material = searchData.recipeMaterial;
+//         alert(material.length);
+//         let searchedList = myList;
+//         if (name) {
+//             searchedList = myList.filter(item => item.name.toLowerCase() === name.toLowerCase());
+//             alert(name);
+//         };
+//         if (label.length > 0) {
+//             for (var i = 0; i < label.length; i++) {
+//                 searchedList = searchedList.filter(item => item.label.includes(label[i]));
+//                 alert(label[i]);
+//             }
+//         };
+//         if (time > 0) {
+//             searchedList = searchedList.filter(item => item.time < time);
+//         };
+//         if (material.length > 0) {
+//             for (var i = 0; i < material.length; i++) {
+//                 const materialCheck = (m) => {
+//                     let isOk = false;
+//                     for (var j = 0; j < m.length; j++) {
+//                         if (Object.keys(m[j]).includes(material[i])) {
+//                             isOk = true;
+//                         }
+//                     }
+//                     return isOk;
+//                 }
+//                 searchedList = searchedList.filter(item => materialCheck(item.material));
+//             };
+//         };
+//         setNewList(searchedList);
+//         setSearchData({
+//             recipeName: "", 
+//             recipeTime: 0, 
+//             recipeMaterial: [], 
+//             recipeRecipe: [], 
+//             recipeLabel: [],
+//         });
+//         setIsSearching(false);
+//     }
+
+//     const handleResetSearch  = (event) => {
+//         event.preventDefault();
+//         setNewList(myList);
+//         setIsSearching(false);
+//     }
+
+//     const handleSingle  = () => {
+//         setSingleOrSet(false);
+//     }
+
+//     const handleSet  = () => {
+//         setSingleOrSet(true);
+//     }
+
+//     return (
+//         <div className='my-list' >
+//             <div className='my-list-header'>
+//                 <button onClick={handleSingle}>Single</button>
+//                 <button onClick={handleSet}>Set</button>
+//             </div>
+//             {singleOrSet ? (
+//                 <Set/>
+//             ) : (
+//                 <Single/>
+//             )}
+//         </div>
+        
+//     );
+// }
+
+// export default MyList;
