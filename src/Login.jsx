@@ -30,11 +30,11 @@ function Login({ handleLogin }) {
             });
             if (response.ok) {
                 const data = await response.json();
-                alert(`Login succeeded: ${data.user.email}`);
+                alert(`Success!: ${data.user.email}`);
                 handleLogin(data.user);
                 navigate('/setting');
             } else {
-                alert('Login Failed');
+                alert('Failed');
             }
         } catch (error) {
             console.error('Error:', error);

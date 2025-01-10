@@ -35,11 +35,11 @@ function SignUp({ handleLogin }) {
                 console.log(response);
 
                 const data = await response.json();
-                alert(`Registration successful: ${data.user.username}`);
+                alert(`Success!: ${data.user.username}`);
                 handleLogin(data.user);
                 navigate('/setting');
             } else {
-                alert('Registration failed');
+                alert('Failed');
             }
         } catch (error) {
             console.error('Error:', error);

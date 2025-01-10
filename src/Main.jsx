@@ -20,14 +20,14 @@ function Main({ isLoggedIn, handleLogin, handleLogout, user }) {
               }
             />
             <Route 
-            path='/myList' 
-              element={
-                isLoggedIn ? (
-                  <MyList user={ user }/>
-                ) : (
-                  <Navigate to="/setting/login" replace />
-                )
-              } 
+              path='/myList' 
+                element={
+                  isLoggedIn ? (
+                    <MyList user={ user }/>
+                  ) : (
+                    <Navigate to="/setting/login" replace />
+                  )
+                } 
             />
             <Route path='/setting/*' element={<Setting isLoggedIn={ isLoggedIn } handleLogin={ handleLogin } handleLogout={ handleLogout } user={ user }/>} />
         </Routes> 

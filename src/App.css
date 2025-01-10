@@ -186,3 +186,69 @@ form button {
   font-size: 1.3rem;
   color: white;
 }
+
+
+/* Add label container */
+.label-input-container {
+  display: flex;
+  align-items: center;
+}
+.recipe-label {
+  width: 250px;
+  margin: 0px 10px 0px 0px;
+}
+.cancel-label {
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+  margin-bottom: 20px;
+}
+.plus-label {
+  width: 150px;
+  margin: 0px 0px 10px 0px;
+}
+
+/* Add materials container */
+.material-input-container {
+  display: flex;
+  align-items: center;
+}
+.recipe-material-name {
+  width: 125px;
+  margin: 0px 10px 0px 0px;
+
+}
+.recipe-material-quantity {
+  width: 70px;
+  margin: 0px 10px 0px 0px;
+}
+.cancel-material {
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+  margin-bottom: 20px;
+}
+.plus-material {
+  width: 150px;
+  margin: 0px 0px 10px 0px;
+}
+
+/* Add process container */
+.process-input-container {
+  display: flex;
+  align-items: center;
+}
+.recipe-process {
+  width: 250px;
+  margin: 0px 10px 0px 0px;
+}
+.cancel-process {
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+  margin-bottom: 20px;
+}
+.plus-process {
+  width: 150px;
+  margin: 0px 0px 10px 0px;
+}
