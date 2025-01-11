@@ -344,12 +344,36 @@ function MyList({ user }) {
     const [newList, setNewList] = useState(myList);
 
     // Fetch user's recipe list
+    // useEffect(() => {
+    //     const fetchRecipes = async () => {
+    //         const response = await fetch('http://localhost:3001/recipe/mylist');
+    //         const data = await response.json();
+    //         // setRecipes(data);
+    //         console.log(data);
+    //     };
+    //     fetchRecipes();
+    // }, []);
     useEffect(() => {
         const fetchRecipes = async () => {
-            const response = await fetch('http://localhost:3001/recipe/mylist');
-            const data = await response.json();
-            // setRecipes(data);
-            console.log(data);
+            let account_id = user.id;
+            try {
+                const response = await fetch('http://localhost:3001/recipe/mylist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }, 
+                    body: JSON.stringify({"account_id": account_id}), 
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(`Success!: ${data.myRecipe}`);
+                } else {
+                    console.log('Failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                console.log('Server error');
+            }
         };
         fetchRecipes();
     }, []);

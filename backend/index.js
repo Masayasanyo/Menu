@@ -61,15 +61,19 @@ app.post('/login', async (req, res) => {
 
 app.post('/recipe/mylist', async (req, res) => {
     const {account_id} = req.body;
+    console.log(account_id);
     if (!account_id) {
         return res.status(400).json({ error: 'Account ID is required' });
     }
     try {
         const result = await db.query(
-            'SELECT * FROM recipe LEFT OUTER JOIN material ON recipe.id = material.recipe_id LEFT OUTER JOIN label ON recipe.id = label.recipe_id LEFT OUTER JOIN recipe_list ON recipe.id = recipe_list.recipe_id JOIN accounts ON recipe.account_id = accounts.id WHERE accounts.id = $1',
+            // 'SELECT * FROM recipe LEFT OUTER JOIN material ON recipe.id = material.recipe_id LEFT OUTER JOIN label ON recipe.id = label.recipe_id LEFT OUTER JOIN process ON recipe.id = process.recipe_id JOIN accounts ON recipe.account_id = accounts.id WHERE accounts.id = $1',
+            // [account_id]
+            'SELECT * FROM recipe LEFT OUTER JOIN material ON recipe.id = material.recipe_id LEFT OUTER JOIN label ON recipe.id = label.recipe_id LEFT OUTER JOIN process ON recipe.id = process.recipe_id WHERE recipe.account_id = $1',
             [account_id]
         );
-        res.status(201).json({ message: 'Success!', myRecipe: result}); 
+        console.log(result.rows);
+        res.status(201).json({ message: 'Success!', myRecipe: result.rows}); 
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: 'Server error' });
@@ -78,6 +82,7 @@ app.post('/recipe/mylist', async (req, res) => {
 
 app.post('/recipe/add', async (req, res) => {
     const {accountId, title, image, time, description, material, process, label} = req.body;
+    console.log(req.body);
     let recipeId = 0;
 
     if (!accountId) {
@@ -90,7 +95,7 @@ app.post('/recipe/add', async (req, res) => {
             'INSERT INTO recipe (account_id, name, image, description, time) VALUES ($1, $2, $3, $4, $5) RETURNING *',
             [accountId, title, image, description, time]
         );
-        res.status(201).json({ message: 'Success!', recipe: result.rows[0] }); 
+        // res.status(201).json({ message: 'Success!', recipe: result.rows[0] }); 
         recipeId = result.rows[0].id;
     } catch (error) {
         console.error('Error:', error);
@@ -105,7 +110,7 @@ app.post('/recipe/add', async (req, res) => {
                 [recipeId, material[i].name, material[i].quantity]
                 // [{'name': 'pork', 'quantity': 1}]
             );
-            res.status(201).json({ message: 'Success!', material: result.rows[0] }); 
+            // res.status(201).json({ message: 'Success!', material: result.rows[0] }); 
         } catch (error) {
             console.error('Error:', error);
             res.status(500).json({ error: 'Server error' });
@@ -119,26 +124,26 @@ app.post('/recipe/add', async (req, res) => {
                 'INSERT INTO label (recipe_id, name) VALUES ($1, $2) RETURNING *',
                 [recipeId, label[i]]
             );
-            res.status(201).json({ message: 'Success!', label: result.rows[0] }); 
+            // res.status(201).json({ message: 'Success!', label: result.rows[0] }); 
         } catch (error) {
             console.error('Error:', error);
             res.status(500).json({ error: 'Server error' });
         }
     }
 
-    // Insert into recipe_list table
+    // Insert into process table
     for (var i = 0; i < process.length; i++) {
         try {
             const result = await db.query(
                 'INSERT INTO process (recipe_id, step, name) VALUES ($1, $2, $3) RETURNING *',
-                [recipeId, i + 1, process[i]]
+                [recipeId, process[i]["step"], process[i]["name"]]
             );
-            res.status(201).json({ message: 'Success!', process: result.rows[0] }); 
+            // res.status(201).json({ message: 'Success!', process: result.rows[0] }); 
         } catch (error) {
             console.error('Error:', error);
             res.status(500).json({ error: 'Server error' });
         }
-    }    
+    }   
 });
 
 

@@ -19,26 +19,95 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
     const handleCancelRecipe  = () => {
         setIsAdding(false);
     }
+
+    // Add label input
+    const [labelInput, setLabelInput] = useState([""]);
+    const handleNewLabel  = (event) => {
+        event.preventDefault();
+        setLabelInput([...labelInput, ""]);
+        console.log('labelInput:', labelInput);
+    }
+    const handleLabelChange  = (index, value) => {
+        const updatedLabel = [...labelInput];
+        updatedLabel[index] = value;
+        setLabelInput(updatedLabel);
+        setFormData({
+            ...formData,
+            ["recipeLabel"]: updatedLabel, 
+        });
+    }
+    const handleCancelLabel  = (event, index) => {
+        event.preventDefault();
+        const updatedLabel = labelInput.filter((_, i) => i !== index);
+        setLabelInput(updatedLabel);
+        setFormData({
+            ...formData,
+            ["recipeLabel"]: updatedLabel, 
+        });
+    }
+
+    //Add material input
+    const [materiallInput, setMaterialInput] = useState([{"name": "", "quantity": ""}]);
+    const handleNewMaterial = (event) => {
+        event.preventDefault();
+        setMaterialInput([...materiallInput, {"name": "", "quantity": ""}]);
+        console.log('materiallInput:', materiallInput);
+    }
+    const handleMaterialChange = (index, target) => {
+        const updatedMaterial = [...materiallInput];
+        if (target.name === "recipeMaterialName") {
+            updatedMaterial[index]["name"] = target.value;
+            setMaterialInput(updatedMaterial);
+        }
+        else {
+            updatedMaterial[index]["quantity"] = target.value;
+            setMaterialInput(updatedMaterial);
+        }
+        setFormData({
+            ...formData,
+            ["recipeMaterial"]: updatedMaterial, 
+        });
+    }
+    const handleCancelMaterial = (event, index) => {
+        event.preventDefault();
+        const updatedMaterial = materiallInput.filter((_, i) => i !== index);
+        setMaterialInput(updatedMaterial);
+        setFormData({
+            ...formData,
+            ["recipeMaterial"]: updatedMaterial, 
+        });
+    }
+
+    // Add process input
+    const [processInput, setProcessInput] = useState([{"step": "", "name": ""}]);
+    const handleNewProcess  = (event) => {
+        event.preventDefault();
+        setProcessInput([...processInput, {"step": "", "name": ""}]);
+        console.log('processInput:', processInput);
+    }
+    const handleProcessChange  = (index, value) => {
+        const updatedProcess = [...processInput];
+        updatedProcess[index]["step"] = index + 1;
+        updatedProcess[index]["name"] = value;
+        setProcessInput(updatedProcess);
+        setFormData({
+            ...formData,
+            ["recipeProcess"]: updatedProcess, 
+        });
+    }
+    const handleCancelProcess  = (event, index) => {
+        event.preventDefault();
+        const updatedProcess = processInput.filter((_, i) => i !== index);
+        setProcessInput(updatedProcess);
+        setFormData({
+            ...formData,
+            ["recipeProcess"]: updatedProcess, 
+        });
+    }
+
+    // Title, time. description, ..
     const handleChange = (event) => {
         let { name, value } = event.target;
-        if (name === "recipeLabel") {
-            value = value.split(',')
-        };
-        if (name === "recipeMaterial") {
-            value = value.split(',')
-            let list = [];
-            for (var i = 0; i < value.length; i++) {
-                const materialKey = value[i].split(":")[0];
-                const materialValue = value[i].split(":")[1];
-                let o = new Object();
-                o[materialKey] = materialValue;
-                list.push(o);
-            }
-            value = list;
-        };
-        if (name === "recipeRecipe") {
-            value = value.split(',')
-        };
         setFormData({
             ...formData,
             [name]: value, 
@@ -53,7 +122,7 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
 
         // Add into database
         try {
-            const response = await fetch('http://localhost:3001//recipe/add', {
+            const response = await fetch('http://localhost:3001/recipe/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,14 +131,14 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
             });
             if (response.ok) {
                 const data = await response.json();
-                alert(`Success!: ${data.name}`);
+                console.log(`Success!: ${data.name}`);
                 // navigate('/setting');
             } else {
-                alert('Failed');
+                console.log('Failed');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Server error');
+            console.log('Server error');
         }
 
         // Reset the form data
@@ -161,54 +230,6 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
             recipeLabel: [],
         });
         setIsSearching(false);
-    }
-
-    // Add label input
-    const [labelInput, setLabelInput] = useState([""]);
-    const handleNewLabel  = () => {
-        setLabelInput([...labelInput, ""]);
-        console.log('labelInput:', labelInput);
-    }
-    const handleLabelChange  = (index, value) => {
-        const updatedLabel = [...labelInput];
-        updatedLabel[index] = value;
-        setLabelInput(updatedLabel);
-    }
-    const handleCancelLabel  = (index) => {
-        const updatedLabel = labelInput.filter((_, i) => i !== index);
-        setLabelInput(updatedLabel);
-    }
-
-    //Add material input
-    const [materiallInput, setMaterialInput] = useState([""]);
-    const handleNewMaterial  = () => {
-        setMaterialInput([...materiallInput, ""]);
-        console.log('materiallInput:', materiallInput);
-    }
-    const handleMaterialChange  = (index, value) => {
-        const updatedMaterial = [...materiallInput];
-        updatedMaterial[index] = value;
-        setMaterialInput(updatedMaterial);
-    }
-    const handleCancelMaterial  = (index) => {
-        const updatedMaterial = materiallInput.filter((_, i) => i !== index);
-        setMaterialInput(updatedMaterial);
-    }
-
-    // Add process input
-    const [processInput, setProcessInput] = useState([""]);
-    const handleNewProcess  = () => {
-        setProcessInput([...processInput, ""]);
-        console.log('processInput:', processInput);
-    }
-    const handleProcessChange  = (index, value) => {
-        const updatedProcess = [...processInput];
-        updatedProcess[index] = value;
-        setLabelInput(updatedProcess);
-    }
-    const handleCancelProcess  = (index) => {
-        const updatedProcess = processInput.filter((_, i) => i !== index);
-        setLabelInput(updatedProcess);
     }
 
     return (
@@ -311,7 +332,7 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
                                     value={label}
                                     onChange={(e) => handleLabelChange(index, e.target.value)}
                                 />
-                                <button onClick={() => handleCancelLabel(index)} className='cancel-label'>×</button>
+                                <button onClick={(event) => handleCancelLabel(event, index)} className='cancel-label'>×</button>
                             </div>
                             ))}
                             
@@ -335,41 +356,44 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
                                 onChange={handleChange}
                             />
 
-                            {/* <h3>Material</h3>
-                            <button onClick={handleNewMateriall} className='plus-material'>+ Add material</button>
-                            <div className='material-input-container'>
+                            <h3>Material</h3>
+                            <button onClick={handleNewMaterial} className='plus-material'>+ Add material</button>
+                            {materiallInput.map((material, index) => (
+                            <div key={index} className='material-input-container'>
                                 <input 
                                     className='recipe-material-name' 
                                     placeholder="name"
                                     type="text"
                                     name="recipeMaterialName"
-                                    // value={formData.recipeMaterial}
-                                    onChange={(e) => handleMaterialChange(index, e.target.value)}
+                                    // value={material[0]}
+                                    onChange={(e) => handleMaterialChange(index, e.target)}
                                 />
                                 <input 
                                     className='recipe-material-quantity' 
                                     placeholder="quantity"
                                     type="text"
                                     name="recipeMaterialQuantity"
-                                    // value={formData.recipeMaterial}
-                                    onChange={(e) => handleMaterialChange(index, e.target.value)}
+                                    // value={material[1]}
+                                    // onChange={(e) => handleMaterialChange(index, e.target.value, )}
+                                    onChange={(e) => handleMaterialChange(index, e.target)}
                                 />
-                                <button className='cancel-material'>×</button>
-                            </div> */}
+                                <button onClick={(event) => handleCancelMaterial(event, index)} className='cancel-material'>×</button>
+                            </div>
+                            ))}
 
                             <h3>Process</h3>
                             <button onClick={handleNewProcess} className='plus-process'>+ Add process</button>
-                            {labelInput.map((label, index) => (
+                            {processInput.map((process, index) => (
                             <div key={index} className='process-input-container'>
                                 <input 
                                     className='recipe-process' 
                                     placeholder="Process"
                                     type="text"
                                     name="recipeProcess"
-                                    value={label}
+                                    // value={process}
                                     onChange={(e) => handleProcessChange(index, e.target.value)}
                                 />
-                                <button onClick={() => handleCancelProcess(index)} className='cancel-process'>×</button>
+                                <button onClick={(event) => handleCancelProcess(event, index)} className='cancel-process'>×</button>
                             </div>
                             ))}
                             <div className='button-container'> 
