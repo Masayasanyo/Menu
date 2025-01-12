@@ -67,12 +67,27 @@ app.post('/recipe/mylist', async (req, res) => {
     }
     try {
         const result = await db.query(
-            // 'SELECT * FROM recipe LEFT OUTER JOIN material ON recipe.id = material.recipe_id LEFT OUTER JOIN label ON recipe.id = label.recipe_id LEFT OUTER JOIN process ON recipe.id = process.recipe_id JOIN accounts ON recipe.account_id = accounts.id WHERE accounts.id = $1',
-            // [account_id]
-            'SELECT * FROM recipe LEFT OUTER JOIN material ON recipe.id = material.recipe_id LEFT OUTER JOIN label ON recipe.id = label.recipe_id LEFT OUTER JOIN process ON recipe.id = process.recipe_id WHERE recipe.account_id = $1',
+            `SELECT 
+                recipe.id AS recipe_id, 
+                recipe.name AS recipe_name, 
+                recipe.image, 
+                recipe.description, 
+                recipe.time, 
+                material.name AS material_name, 
+                material.quantity, 
+                label.name AS label_name, 
+                process.step AS process_step, 
+                process.name AS process_name
+            FROM recipe 
+            LEFT OUTER JOIN material ON recipe.id = material.recipe_id 
+            LEFT OUTER JOIN label ON recipe.id = label.recipe_id 
+            LEFT OUTER JOIN process ON recipe.id = process.recipe_id 
+            JOIN accounts ON recipe.account_id = accounts.id 
+            WHERE accounts.id = $1`,
             [account_id]
         );
-        console.log(result.rows);
+        console.log(result.rows[0]);
+
         res.status(201).json({ message: 'Success!', myRecipe: result.rows}); 
     } catch (error) {
         console.error('Error:', error);

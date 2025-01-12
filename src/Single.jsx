@@ -174,14 +174,61 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
         setNewList(myList);
         setIsSearching(false);
     }
+
+    // Search Label input
+    const [searchLabelInput, setSearchLabelInput] = useState([""]);
+    const handleNewSearchLabel  = (event) => {
+        event.preventDefault();
+        setSearchLabelInput([...searchLabelInput, ""]);
+        console.log('searchLabelInput:', searchLabelInput);
+    }
+    const handleSearchLabelChange  = (index, value) => {
+        const updatedSearchLabel = [...searchLabelInput];
+        updatedSearchLabel[index] = value;
+        setSearchLabelInput(updatedSearchLabel);
+        setSearchData({
+            ...searchData,
+            ["recipeLabel"]: updatedSearchLabel, 
+        });
+    }
+    const handleCancelSearchLabel  = (event, index) => {
+        event.preventDefault();
+        const updatedSearchLabel = searchLabelInput.filter((_, i) => i !== index);
+        setSearchLabelInput(updatedSearchLabel);
+        setSearchData({
+            ...searchData,
+            ["recipeLabel"]: updatedSearchLabel, 
+        });
+    }
+
+    //Search material input
+    const [searchMateriallInput, setSearchMateriallInput] = useState([""]);
+    const handleNewSearchMaterial = (event) => {
+        event.preventDefault();
+        setSearchMateriallInput([...searchMateriallInput, ""]);
+        console.log('materiallInput:', searchMateriallInput);
+    }
+    const handleSearchMaterialChange = (index, value) => {
+        const updatedSearchMaterial = [...searchMateriallInput];
+        updatedSearchMaterial[index] = value;
+        setSearchMateriallInput(updatedSearchMaterial);
+        setSearchData({
+            ...searchData,
+            ["recipeMaterial"]: updatedSearchMaterial, 
+        });
+    }
+    const handleCancelSearchMaterial = (event, index) => {
+        event.preventDefault();
+        const updatedSearchMaterial = searchMateriallInput.filter((_, i) => i !== index);
+        setSearchMateriallInput(updatedSearchMaterial);
+        setSearchData({
+            ...searchData,
+            ["recipeMaterial"]: updatedSearchMaterial, 
+        });
+    }
+
     const handleSearchChange = (event) => {
         let { name, value } = event.target;
-        if (name === "recipeLabel") {
-            value = value.split(',')
-        };
-        if (name === "recipeMaterial") {
-            value = value.split(',')
-        };
         setSearchData({
             ...searchData,
             [name]: value, 
@@ -193,16 +240,13 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
         const label = searchData.recipeLabel;
         const time = searchData.recipeTime;
         const material = searchData.recipeMaterial;
-        alert(material.length);
         let searchedList = myList;
         if (name) {
-            searchedList = myList.filter(item => item.name.toLowerCase() === name.toLowerCase());
-            alert(name);
+            searchedList = myList.filter(item => item.title.toLowerCase() === name.toLowerCase());
         };
         if (label.length > 0) {
             for (var i = 0; i < label.length; i++) {
                 searchedList = searchedList.filter(item => item.label.includes(label[i]));
-                alert(label[i]);
             }
         };
         if (time > 0) {
@@ -213,7 +257,7 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
                 const materialCheck = (m) => {
                     let isOk = false;
                     for (var j = 0; j < m.length; j++) {
-                        if (Object.keys(m[j]).includes(material[i])) {
+                        if (Object.values(m[j]).includes(material[i])) {
                             isOk = true;
                         }
                     }
@@ -239,6 +283,7 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
                     <button className='header-button' onClick={handleOpenSearch}>Search</button>
                     {isSearching && (
                         <form onSubmit={handleSearchSubmit} className='search-recipe-container'>
+                            
                             <h3>Recipe Title</h3>
                             <input 
                                 className='recipe-name' 
@@ -248,15 +293,23 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
                                 value={searchData.recipeName}
                                 onChange={handleSearchChange}
                             />
+
                             <h3>Label</h3>
-                            <input 
-                                className='recipe-label' 
-                                placeholder="example: lunch,summer,..."
-                                type="text"
-                                name="recipeLabel"
-                                value={searchData.recipeLabel}
-                                onChange={handleSearchChange}
-                            />
+                            <button onClick={handleNewSearchLabel} className='plus-label'>+ Add label</button>
+                            {searchLabelInput.map((label, index) => (
+                            <div key={index} className='label-input-container'>
+                                <input 
+                                    className='recipe-label' 
+                                    placeholder="example: lunch,summer,..."
+                                    type="text"
+                                    name="recipeLabel"
+                                    value={label}
+                                    onChange={(e) => handleSearchLabelChange(index, e.target.value)}
+                                />
+                                <button onClick={(event) => handleCancelSearchLabel(event, index)} className='cancel-label'>×</button>
+                            </div>
+                            ))}
+
                             <h3>Time (max)</h3>
                             <input 
                                 className='recipe-time' 
@@ -267,24 +320,20 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
                                 onChange={handleSearchChange}
                             />
                             <h3>Material</h3>
-                            <div>
+                            <button onClick={handleNewSearchMaterial} className='plus-material'>+ Add material</button>
+                            {searchMateriallInput.map((material, index) => (
+                            <div key={index} className='material-input-container'>
                                 <input 
-                                    className='recipe-material' 
-                                    placeholder="example: egg,pork,..."
+                                    className='recipe-material-name' 
+                                    placeholder="name"
                                     type="text"
-                                    name="recipeMaterial"
-                                    value={searchData.recipeMaterial}
-                                    onChange={handleSearchChange}
+                                    name="recipeMaterialName"
+                                    // value={material[0]}
+                                    onChange={(e) => handleSearchMaterialChange(index, e.target.value)}
                                 />
-                                <input 
-                                    className='recipe-material' 
-                                    placeholder="example: egg,pork,..."
-                                    type="text"
-                                    name="recipeMaterial"
-                                    value={searchData.recipeMaterial}
-                                    onChange={handleSearchChange}
-                                />
+                                <button onClick={(event) => handleCancelSearchMaterial(event, index)} className='cancel-material'>×</button>
                             </div>
+                            ))}
                             
                             <div className='button-container'>
                                 <button type='submit'>Apply</button>
@@ -295,6 +344,8 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
                         </form>
                     )}
                 </div>
+
+
                 <div className='my-list-add' >
                     <button className='header-button' onClick={handleAddRecipe}>Add</button>
                     {isAdding && (
@@ -404,11 +455,12 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
                     )}
                 </div> 
             </div>
-            {/* <div className='my-list-container'>
+
+            <div className='my-list-container'>
                 {newList.length > 0 ? (
                 newList.map((myRecipe, index) => (
                 <div className='my-recipe-container' key={index}>
-                    <h2>{myRecipe.name}</h2>
+                    <h2>{myRecipe.title}</h2>
                     <hr/>
                     <div className='label-container' >
                     {myRecipe.label.map((l, index) => (
@@ -416,35 +468,35 @@ function Single({ user, myList, newList, setMyList, setNewList }) {
                     ))}
                     </div>
                     <hr/>
-                    <img height='200px' src={myRecipe.image} alt={myRecipe.name} ></img>
+                    <img height='200px' src={myRecipe.image} alt={myRecipe.title} ></img>
                     <hr/>
                     <h3>{myRecipe.time} min</h3>
                     <hr/>
-                    <h3>{myRecipe.description}</h3>
+                    <p>{myRecipe.description}</p>
                     <hr/>
                     <div>
                         <h3>Material</h3>
                         <ul>
                         {myRecipe.material.map((m, index) => (
-                            <li key={index}>{Object.keys(m)[0]} … {m[Object.keys(m)[0]]}</li>
+                            <li key={index}>{m.name} … {m.quantity}</li>
                         ))}
                         </ul>
                     </div>
                     <hr/>
                     <div>
-                        <h3>Recipe</h3>
-                        <ol>
-                        {myRecipe.recipe.map((r, index) => (
-                            <li key={index}>{r}</li>
+                        <h3>Process</h3>
+                        <div>
+                        {myRecipe.process.map((p, index) => (
+                            <p key={index}>{p.step}. {p.name}</p>
                         ))}
-                        </ol>
+                        </div>
                     </div>
                 </div>
                 ))
                 ) : (
                     <p>No Recipe</p>
                 )}
-            </div>  */}
+            </div> 
         </div>
         
     );
