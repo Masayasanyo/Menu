@@ -161,40 +161,6 @@ app.post('/recipe/add', async (req, res) => {
     }   
 });
 
-
-// app.post('/usertodo', async (req, res) => {
-//     const { id } = req.body;
-//     try {
-//         const result = await db.query(
-//             'SELECT * FROM todo WHERE account_id = $1',
-//             [id]
-//         );
-//         if (result.rows.length > 0) {
-//             const usertodo = result.rows;
-//             res.status(200).json({ message: 'Success!', usertodo: usertodo });
-//         } else {
-//             res.status(200).json({ message: 'Task not found' });
-//         }
-//     } catch (error) {
-//         console.error('Error:', error);
-//         res.status(500).json({ error: 'Server error' });
-//     }
-// });
-
-// app.post('/check', async (req, res) => {
-//     const { id } = req.body;
-//     try {
-//         const result = await db.query(
-//             'UPDATE todo SET progress = true WHERE id = $1 RETURNING *',
-//             [id]
-//         );
-//         res.status(200).json({ message: 'Success', task: result.rows[0] }); 
-//     } catch (error) {
-//         console.error('Error:', error);
-//         res.status(500).json({ error: 'Server error' });
-//     }
-// });
-
 const PORT = 3001;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server: ${PORT}`);
